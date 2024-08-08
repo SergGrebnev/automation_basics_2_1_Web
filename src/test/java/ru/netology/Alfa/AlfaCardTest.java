@@ -2,21 +2,34 @@ package ru.netology.Alfa;
 
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import io.github.bonigarcia.wdm.WebDriverManager;
+
 
 
 public class AlfaCardTest {
-    //с использованием Selenide
+    //с использованием Selenium
     private WebDriver driver;
+
+    @BeforeAll
+    public static void setupAll() {
+        WebDriverManager.chromedriver().setup();
+    }
 
 
     @BeforeEach
     public void setUp() {
 
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--headless");
+        driver = new ChromeDriver(options);
     }
 
     @AfterEach
@@ -26,7 +39,8 @@ public class AlfaCardTest {
     }
 
     @Test
-    public void testFormCard() {
+    public void testFormCard()
+    {
         driver.get("http://localhost:9999");
     }
 
