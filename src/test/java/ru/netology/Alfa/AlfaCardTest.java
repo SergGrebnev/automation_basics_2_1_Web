@@ -12,7 +12,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class AlfaCardTest {
@@ -42,7 +45,7 @@ public class AlfaCardTest {
     }
 
     @Test
-    public void testFormCard() throws InterruptedException {
+    public void testFormCardHappyPath() throws InterruptedException {
         driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Сергей");
         driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79130000000");
@@ -52,7 +55,43 @@ public class AlfaCardTest {
         String text = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText();
 
         assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim()); //.trim() - удаляет лишние пробелы в начале и в конце строки
-        //Thread.sleep(10000);
+    Thread.sleep(10000);
+    }
+
+
+    @Test
+    public void testFormCardInvalidName()  {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Serg");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79130000000");
+        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(By.className("button")).click();
+        List<WebElement> elements = driver.findElements(By.className("input_invalid"));
+
+        assertFalse(elements.isEmpty());
+    }
+
+    @Test
+    public void testFormCardInvalidPhone()  {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Сергей");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("15-480");
+        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(By.className("button")).click();
+        List<WebElement> elements = driver.findElements(By.className("input_invalid"));
+
+        assertFalse(elements.isEmpty());
+    }
+
+    @Test
+    public void testFormCardNoCheckbox()  {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Сергей");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79130000000");
+        driver.findElement(By.className("button")).click();
+        List<WebElement> elements = driver.findElements(By.className("input_invalid"));
+
+        assertFalse(elements.isEmpty());
     }
 
 
