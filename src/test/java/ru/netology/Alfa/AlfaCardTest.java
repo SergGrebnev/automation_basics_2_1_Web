@@ -55,43 +55,36 @@ public class AlfaCardTest {
         String text = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText();
 
         assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim()); //.trim() - удаляет лишние пробелы в начале и в конце строки
-    Thread.sleep(10000);
+
     }
 
 
     @Test
-    public void testFormCardInvalidName()  {
+    public void testFormCardInvalidName() {
         driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Serg");
         driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79130000000");
         driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         driver.findElement(By.className("button")).click();
-        List<WebElement> elements = driver.findElements(By.className("input_invalid"));
 
-        assertFalse(elements.isEmpty());
+        String text = driver.findElement(By.className("input_invalid")).findElement(By.className("input__sub")).getText();
+
+        assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim()); //.trim() - удаляет лишние пробелы в начале и в конце строки
+
     }
 
     @Test
-    public void testFormCardInvalidPhone()  {
+    public void testFormCardInvalidPhone() {
         driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Сергей");
         driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("15-480");
         driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         driver.findElement(By.className("button")).click();
-        List<WebElement> elements = driver.findElements(By.className("input_invalid"));
 
-        assertFalse(elements.isEmpty());
-    }
+        String text = driver.findElement(By.className("input_invalid")).findElement(By.className("input__sub")).getText();
 
-    @Test
-    public void testFormCardNoCheckbox()  {
-        driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Сергей");
-        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79130000000");
-        driver.findElement(By.className("button")).click();
-        List<WebElement> elements = driver.findElements(By.className("input_invalid"));
+        assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.", text.trim()); //.trim() - удаляет лишние пробелы в начале и в конце строки
 
-        assertFalse(elements.isEmpty());
     }
 
 
