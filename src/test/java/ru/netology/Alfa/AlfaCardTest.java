@@ -67,9 +67,23 @@ public class AlfaCardTest {
         driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         driver.findElement(By.className("button")).click();
 
-        String text = driver.findElement(By.className("input_invalid")).findElement(By.className("input__sub")).getText();
+        String text = driver.findElement(By.cssSelector("[data-test-id=name].input_invalid .input__sub")).getText();
 
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim()); //.trim() - удаляет лишние пробелы в начале и в конце строки
+
+    }
+
+
+    @Test
+    public void testFormCardEmptyName() {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79130000000");
+        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(By.className("button")).click();
+
+        String text = driver.findElement(By.cssSelector("[data-test-id=name].input_invalid .input__sub")).getText();
+
+        assertEquals("Поле обязательно для заполнения", text.trim()); //.trim() - удаляет лишние пробелы в начале и в конце строки
 
     }
 
@@ -81,9 +95,22 @@ public class AlfaCardTest {
         driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         driver.findElement(By.className("button")).click();
 
-        String text = driver.findElement(By.className("input_invalid")).findElement(By.className("input__sub")).getText();
+        String text = driver.findElement(By.cssSelector("[data-test-id=phone].input_invalid .input__sub")).getText();
 
         assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.", text.trim()); //.trim() - удаляет лишние пробелы в начале и в конце строки
+
+    }
+
+    @Test
+    public void testFormCardEmptyPhone() {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Сергей");
+        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(By.className("button")).click();
+
+        String text = driver.findElement(By.cssSelector("[data-test-id=phone].input_invalid .input__sub")).getText();
+
+        assertEquals("Поле обязательно для заполнения", text.trim()); //.trim() - удаляет лишние пробелы в начале и в конце строки
 
     }
 
